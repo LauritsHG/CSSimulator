@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Messages.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Grpc.Tools" Version="2.48.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -16,6 +20,9 @@
     <PackageReference Include="Proto.Cluster.CodeGen" Version="0.33.0" />
     <PackageReference Include="Proto.Cluster.TestProvider" Version="0.33.0" />
     <PackageReference Include="Proto.Remote" Version="0.33.0" />
+    <Protobuf Include="Messages.proto" />
+	  <ProtoGrain Include="Messages.proto"></ProtoGrain>
+	  <ProtoGrain Include="Grains.proto" AdditionalImportDirs="." />
   </ItemGroup>
 
 </Project>
