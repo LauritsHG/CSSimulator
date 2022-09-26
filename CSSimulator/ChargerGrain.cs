@@ -38,19 +38,9 @@ public class ChargerGrain : ChargerGrainBase
         }
     }
 
-    public override Task ReceiveMsgFromCharger(MessageFromCharger request)
+    public override async Task ReceiveMsgFromCharger(MessageFromCharger request)
     {
-        
-        return Task.CompletedTask;
+        Console.WriteLine(request.Msg + " from " + request.From);
     }
-
-
-
-
-
-    //public override async Task ReceiveMsgFromCharger(string msg, string from)
-    //{
-
-    //}
 
 }
