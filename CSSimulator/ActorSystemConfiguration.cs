@@ -1,7 +1,7 @@
 ﻿using Proto;
 using Proto.Cluster;
+using Proto.Cluster.Consul;
 using Proto.Cluster.Partition;
-using Proto.Cluster.Testing;
 using Proto.DependencyInjection;
 using Proto.Remote;
 using Proto.Remote.GrpcNet;
@@ -23,15 +23,19 @@ public static class ActorSystemConfiguration
 
             //var remoteConfig = GrpcNetRemoteConfig
             //    .BindToLocalhost().WithProtoMessages(MessagesReflection.Descriptor);
+           //var remoteConfig = GrpcNetRemoteConfig
+           //    .BindToAllInterfaces(advertisedHost: configuration["ProtoActor:AdvertisedHost"])
+           //    .WithProtoMessages(MessagesReflection.Descriptor);
+
             var remoteConfig = GrpcNetRemoteConfig
-            .BindTo("0.0.0.0",1234).WithProtoMessages(MessagesReflection.Descriptor);
+            .BindTo("localhost"/*"0.0.0.0", 8300*/).WithProtoMessages(MessagesReflection.Descriptor);
 
             // cluster configuration
 
             var clusterConfig = ClusterConfig
                 .Setup(
                     clusterName: "CSSimulatorCluster",
-                    clusterProvider: new TestProvider(new TestProviderOptions(), new InMemAgent()),
+                    clusterProvider: new ConsulProvider(new ConsulProviderConfig()),
                     identityLookup: new PartitionIdentityLookup()
                 ).WithClusterKind(
                 kind: ChargerGrainActor.Kind,
@@ -40,7 +44,9 @@ public static class ActorSystemConfiguration
                 (context, clusterIdentity) => new ChargerGrain(context, clusterIdentity)
             )
         )
+
     );
+
 
             // create the actor system
 

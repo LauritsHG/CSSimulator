@@ -21,7 +21,7 @@
 using CSSimulator;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddActorSystem();
+builder.Services.AddActorSystem(/*builder.Configuration*/);
 builder.Services.AddHostedService<ActorSystemClusterHostedService>();
 //builder.Services.AddHostedService<ChargerSimulator>();
 
