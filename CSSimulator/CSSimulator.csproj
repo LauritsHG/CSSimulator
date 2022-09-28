@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="Messages.proto" />
+    <None Remove="protoactor\Protos.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +24,7 @@
     <PackageReference Include="Proto.Cluster.TestProvider" Version="0.33.0" />
     <PackageReference Include="Proto.Remote" Version="0.33.0" />
       <Protobuf Include="Messages.proto" />
+      <Protobuf Include="protoactor\Protos.proto" />
 	  <ProtoGrain Include="Messages.proto"></ProtoGrain>
 	  <ProtoGrain Include="Grains.proto" AdditionalImportDirs="." />
   </ItemGroup>

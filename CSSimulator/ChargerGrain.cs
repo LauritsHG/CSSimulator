@@ -10,6 +10,8 @@ public class ChargerGrain : ChargerGrainBase
 
     private enum ChargerState { Unknown, Charging, Idle }
     private ChargerState _state = ChargerState.Unknown;
+    private PID currentChargerGateway; //Current actor handling connection
+    private string identity; //Serial number
 
     public ChargerGrain(IContext context, ClusterIdentity clusterIdentity) : base(context)
     {
@@ -38,9 +40,16 @@ public class ChargerGrain : ChargerGrainBase
         }
     }
 
-    public override async Task ReceiveMsgFromCharger(MessageFromCharger request)
+    public override async Task  ReceiveMsgFromCharger(MessageFromCharger request)
     {
         Console.WriteLine(request.Msg + " from " + request.From);
+        await Task.CompletedTask;
     }
 
+    public override async Task NewWebSocketFromCharger(ChargerActorIdentity request)
+    {
+        currentChargerGateway = request.Pid;
+        identity=request.SerialNumber;
+        Console.WriteLine("New connection from Charger registered: "+ identity);
+    }
 }

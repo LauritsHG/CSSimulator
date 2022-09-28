@@ -28,7 +28,8 @@ public static class ActorSystemConfiguration
            //    .WithProtoMessages(MessagesReflection.Descriptor);
 
             var remoteConfig = GrpcNetRemoteConfig
-            .BindTo("localhost"/*"0.0.0.0", 8300*/).WithProtoMessages(MessagesReflection.Descriptor);
+                .BindTo("localhost"/*"0.0.0.0", 8300*/)
+                .WithProtoMessages(MessagesReflection.Descriptor);
 
             // cluster configuration
 
