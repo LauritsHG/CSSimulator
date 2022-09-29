@@ -1,5 +1,5 @@
 ﻿syntax = "proto3";
-import "protoactor/Protos.proto";
+import "Protocol/protoactor/Protos.proto";
 option csharp_namespace = "ChargerMessages";
 
 message MessageFromCharger {

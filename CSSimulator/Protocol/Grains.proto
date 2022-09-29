@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 option csharp_namespace = "ChargerMessages";
-import "Messages.proto";
+import "Protocol/Messages.proto";
 import "google/protobuf/empty.proto";
 
 
