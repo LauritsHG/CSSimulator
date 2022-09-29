@@ -2,7 +2,7 @@
 package actor;
 option csharp_namespace = "Proto";
 
-message PID {
+message PID2 {
   string Address = 1;
   string Id = 2;
 }
@@ -15,15 +15,15 @@ message VoidResponse {}
 
 //system messages
 message Watch {
-  PID Watcher = 1;
+  PID2 Watcher = 1;
 }
 
 message Unwatch {
-  PID Watcher = 1;
+  PID2 Watcher = 1;
 }
 
 message Terminated {
-  PID who = 1;
+  PID2 who = 1;
   bool AddressTerminated = 2;
 }
 

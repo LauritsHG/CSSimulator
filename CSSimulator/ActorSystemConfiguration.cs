@@ -1,10 +1,12 @@
-﻿using Proto;
+﻿using ChargerMessages;
+using Proto;
 using Proto.Cluster;
 using Proto.Cluster.Consul;
 using Proto.Cluster.Partition;
 using Proto.DependencyInjection;
 using Proto.Remote;
 using Proto.Remote.GrpcNet;
+using LFA;
 
 namespace CSSimulator;
 
@@ -29,7 +31,7 @@ public static class ActorSystemConfiguration
 
             var remoteConfig = GrpcNetRemoteConfig
                 .BindTo("localhost"/*"0.0.0.0", 8300*/)
-                .WithProtoMessages(MessagesReflection.Descriptor);
+                .WithProtoMessages(new[] { MessagesReflection.Descriptor, ChargerGatewayMessagesReflection.Descriptor });
 
             // cluster configuration
 

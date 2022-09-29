@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 import "protoactor/Protos.proto";
-option csharp_namespace = "CSSimulator";
+option csharp_namespace = "ChargerMessages";
 
 message MessageFromCharger {
 	string msg = 1;
@@ -8,6 +8,6 @@ message MessageFromCharger {
 }
 
 message ChargerActorIdentity {
-	actor.PID pid = 1;
+	actor.PID2 pid = 1;
 	string serial_number = 2;
 }

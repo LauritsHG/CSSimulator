@@ -1,6 +1,7 @@
 ﻿using Proto;
 using Proto.Cluster;
-//using Messages;
+using ChargerMessages;
+using LFA;
 
 namespace CSSimulator;
 
@@ -17,7 +18,7 @@ public class ChargerGrain : ChargerGrainBase
     {
         _clusterIdentity = clusterIdentity;
 
-        Console.WriteLine($"{_clusterIdentity.Identity}: created");
+        Console.WriteLine($"{_clusterIdentity.Identity}: new virtual grain actor created");
     }
 
     public override async Task StartCharging()
@@ -25,7 +26,7 @@ public class ChargerGrain : ChargerGrainBase
         if (_state != ChargerState.Idle)
         {
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger on");
-            Context.Send(currentChargerGateway, "Hej");
+            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload="Turn on, please :)"});
 
             _state = ChargerState.Charging;
         }
@@ -36,6 +37,7 @@ public class ChargerGrain : ChargerGrainBase
         if (_state != ChargerState.Charging)
         {
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger off");
+            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn off, please :)" });
 
             _state = ChargerState.Idle;
         }
@@ -45,12 +47,15 @@ public class ChargerGrain : ChargerGrainBase
     {
         Console.WriteLine(request.Msg + " from " + request.From);
         await Task.CompletedTask;
+        await StartCharging();//Democode - not final
     }
 
     public override async Task NewWebSocketFromCharger(ChargerActorIdentity request)
     {
-        currentChargerGateway = request.Pid;
+        currentChargerGateway=new PID();
+        currentChargerGateway.Address = request.Pid.Address;
+        currentChargerGateway.Id = request.Pid.Id;
+        //currentChargerGateway =request.Pid;
         identity=request.SerialNumber;
-        Console.WriteLine("New connection from Charger registered: "+ identity);
     }
 }

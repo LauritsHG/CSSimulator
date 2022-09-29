@@ -1,4 +1,5 @@
-﻿using Proto;
+﻿using ChargerMessages;
+using Proto;
 using Proto.Cluster;
 
 namespace CSSimulator;
