@@ -25,6 +25,7 @@ public class ChargerGrain : ChargerGrainBase
         if (_state != ChargerState.Idle)
         {
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger on");
+            Context.Send(currentChargerGateway, "Hej");
 
             _state = ChargerState.Charging;
         }
