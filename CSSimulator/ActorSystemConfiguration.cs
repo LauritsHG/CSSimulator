@@ -7,12 +7,13 @@ using Proto.DependencyInjection;
 using Proto.Remote;
 using Proto.Remote.GrpcNet;
 using LFA;
+using Proto.Cluster.Kubernetes;
 
 namespace CSSimulator;
 
 public static class ActorSystemConfiguration
 {
-    public static void AddActorSystem(this IServiceCollection serviceCollection)
+    public static void AddActorSystem(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         serviceCollection.AddSingleton(provider =>
         {
@@ -30,7 +31,7 @@ public static class ActorSystemConfiguration
            //    .WithProtoMessages(MessagesReflection.Descriptor);
 
             var remoteConfig = GrpcNetRemoteConfig
-                .BindTo("localhost"/*"0.0.0.0", 8300*/)
+                .BindToAllInterfaces(advertisedHost: configuration["ProtoActor:AdvertisedHost"])
                 .WithProtoMessages(new[] { MessagesReflection.Descriptor, ChargerGatewayMessagesReflection.Descriptor });
 
             // cluster configuration
@@ -38,7 +39,7 @@ public static class ActorSystemConfiguration
             var clusterConfig = ClusterConfig
                 .Setup(
                     clusterName: "CSSimulatorCluster",
-                    clusterProvider: new ConsulProvider(new ConsulProviderConfig()),
+                    clusterProvider: new KubernetesProvider(),
                     identityLookup: new PartitionIdentityLookup()
                 ).WithClusterKind(
                 kind: ChargerGrainActor.Kind,
