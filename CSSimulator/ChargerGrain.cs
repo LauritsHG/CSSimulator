@@ -45,6 +45,7 @@ public class ChargerGrain : ChargerGrainBase
 
     public override async Task  ReceiveMsgFromCharger(MessageFromCharger request)
     {
+
         Console.WriteLine(request.Msg + " from " + request.From);
         await StartCharging();//Democode - not final
     }

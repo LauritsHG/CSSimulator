@@ -9,7 +9,7 @@ using Proto.Remote.GrpcNet;
 using LFA;
 using Proto.Cluster.Kubernetes;
 
-namespace CSSimulator;
+namespace CSSimulator.ActorSetup;
 
 public static class ActorSystemConfiguration
 {
@@ -26,9 +26,9 @@ public static class ActorSystemConfiguration
 
             //var remoteConfig = GrpcNetRemoteConfig
             //    .BindToLocalhost().WithProtoMessages(MessagesReflection.Descriptor);
-           //var remoteConfig = GrpcNetRemoteConfig
-           //    .BindToAllInterfaces(advertisedHost: configuration["ProtoActor:AdvertisedHost"])
-           //    .WithProtoMessages(MessagesReflection.Descriptor);
+            //var remoteConfig = GrpcNetRemoteConfig
+            //    .BindToAllInterfaces(advertisedHost: configuration["ProtoActor:AdvertisedHost"])
+            //    .WithProtoMessages(MessagesReflection.Descriptor);
 
             var remoteConfig = GrpcNetRemoteConfig
                 .BindToAllInterfaces(advertisedHost: configuration["ProtoActor:AdvertisedHost"])
