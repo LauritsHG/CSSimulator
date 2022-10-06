@@ -9,7 +9,7 @@ using Proto.Remote.GrpcNet;
 using LFA;
 
 
-namespace CSSimulator;
+namespace CSSimulator.ActorSetup;
 /// <summary>
 /// Configure actorsystem for communication between LFA and CS
 /// Prerequisites: Download and run Consul: https://www.consul.io/downloads

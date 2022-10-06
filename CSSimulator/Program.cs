@@ -18,7 +18,7 @@
 //app.UseAuthorization();
 
 //app.MapRazorPages();
-using CSSimulator;
+using CSSimulator.ActorSetup;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsDevelopment()) builder.Services.AddConsulActorSystem();

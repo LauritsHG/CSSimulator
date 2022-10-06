@@ -1,7 +1,7 @@
 ﻿using Proto;
 using Proto.Cluster;
 
-namespace CSSimulator;
+namespace CSSimulator.ActorSetup;
 
 
 public class ActorSystemClusterHostedService : IHostedService
