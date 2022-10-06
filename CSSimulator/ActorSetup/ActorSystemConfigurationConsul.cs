@@ -38,7 +38,23 @@ public static class ActorSystemConfigurationConsul
                     clusterName: "CSSimulatorCluster",
                     clusterProvider: new ConsulProvider(new ConsulProviderConfig()),
                     identityLookup: new PartitionIdentityLookup()
-                );
+                ).WithClusterKind(
+                kind: ChargerGrainActor.Kind,
+                prop: Props.FromProducer(() =>
+            new ChargerGrainActor(
+                (context, clusterIdentity) => new ChargerGrain(context, clusterIdentity)
+            )
+        )
+
+    ).WithClusterKind(
+                kind: AuthGrainActor.Kind,
+                prop: Props.FromProducer(() =>
+            new AuthGrainActor(
+                (context, clusterIdentity) => new AuthGrain(context, clusterIdentity)
+            )
+        )
+
+    );
 
             // create the actor system
 
