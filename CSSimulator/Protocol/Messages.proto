@@ -11,3 +11,9 @@ message ChargerActorIdentity {
 	actor.PID2 pid = 1;
 	string serial_number = 2;
 }
+message AuthenticationMessage {
+	string credentials =1;
+}
+message AuthenticationResponse{
+	bool validated = 1;
+}
