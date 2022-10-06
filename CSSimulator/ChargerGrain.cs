@@ -47,7 +47,10 @@ public class ChargerGrain : ChargerGrainBase
     {
 
         Console.WriteLine(request.Msg + " from " + request.From);
-        await StartCharging();//Democode - not final
+        CommandToChargerMessage cmd = new CommandToChargerMessage();
+        cmd.Payload = request.Msg;
+        Context.Send(currentChargerGateway, cmd);
+        //await StartCharging();//Democode - not final
     }
 
     public override async Task NewWebSocketFromCharger(ChargerActorIdentity request)
