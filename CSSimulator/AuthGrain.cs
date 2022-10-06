@@ -39,8 +39,6 @@ public class AuthGrain : AuthGrainBase
         }
         else
         {
-            Console.WriteLine(splitString[0]);
-            Console.WriteLine(splitString[1]);
             if (splitString[0] == "Username" && splitString[1] == "Password")
             {
                 response.Validated = true;
