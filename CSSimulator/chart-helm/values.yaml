@@ -18,25 +18,6 @@ member:
     type: ClusterIP
     port: 5000
 
-member1:
-  replicaCount: 1
-
-  image:
-    repository: filip8600/lfa
-    pullPolicy: IfNotPresent
-    tag: "latest"
-
-  podAnnotations: {}
-
-  podSecurityContext:
-    runAsUser: 101
-
-  securityContext:
-    allowPrivilegeEscalation: false
-
-  service:
-    type: ClusterIP
-    port: 5081
   
 
 
