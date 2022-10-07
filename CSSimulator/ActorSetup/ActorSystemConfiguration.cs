@@ -49,6 +49,14 @@ public static class ActorSystemConfiguration
             )
         )
 
+    ).WithClusterKind(
+                kind: AuthGrainActor.Kind,
+                prop: Props.FromProducer(() =>
+            new AuthGrainActor(
+                (context, clusterIdentity) => new AuthGrain(context, clusterIdentity)
+            )
+        )
+
     );
 
 
