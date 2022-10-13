@@ -26,7 +26,7 @@ public class ChargerGrain : ChargerGrainBase
         if (_state != ChargerState.Idle)
         {
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger on");
-            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload="Turn on, please :)"});
+            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn on, please :)",CommandUid= Guid.NewGuid().ToString() }) ;
 
             _state = ChargerState.Charging;
         }
@@ -47,18 +47,27 @@ public class ChargerGrain : ChargerGrainBase
     {
 
         Console.WriteLine(request.Msg + " from " + request.From);
-        CommandToChargerMessage cmd = new CommandToChargerMessage();
-        cmd.Payload = request.Msg;
+        CommandToChargerMessage cmd = new()
+        {
+            Payload = request.Msg
+        };
         Context.Send(currentChargerGateway, cmd);
         //await StartCharging();//Democode - not final
     }
 
     public override async Task NewWebSocketFromCharger(ChargerActorIdentity request)
     {
-        currentChargerGateway=new PID();
-        currentChargerGateway.Address = request.Pid.Address;
-        currentChargerGateway.Id = request.Pid.Id;
+        currentChargerGateway = new PID
+        {
+            Address = request.Pid.Address,
+            Id = request.Pid.Id
+        };
         //currentChargerGateway =request.Pid;
-        identity=request.SerialNumber;
+        identity =request.SerialNumber;
+    }
+
+    public override async Task CommandReceived(CommandStatus status)
+    {
+        Console.WriteLine("Command received by charger "+identity+". Succeeded=" + status.Succeeded + " - " + status.Details);
     }
 }

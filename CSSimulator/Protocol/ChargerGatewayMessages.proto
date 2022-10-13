@@ -3,7 +3,10 @@ option csharp_namespace = "LFA";
 import "google/protobuf/empty.proto";
 
 //Public facing messages (from CentralSystem) to ChargerGatewayActor
+
+///<summary>Command to charger (eg. start charging)</summary>
 message CommandToChargerMessage
 {
 	string payload = 1;
+	string commandUid = 2;
 }
