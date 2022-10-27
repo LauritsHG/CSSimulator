@@ -3,7 +3,6 @@ using Proto;
 using Proto.Cluster;
 
 namespace CSSimulator;
-
 public class ChargerSimulator : BackgroundService
 {
     private readonly ActorSystem _actorSystem;
