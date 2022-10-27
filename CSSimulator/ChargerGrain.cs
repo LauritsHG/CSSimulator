@@ -11,8 +11,8 @@ public class ChargerGrain : ChargerGrainBase
 
     private enum ChargerState { Unknown, Charging, Idle }
     private ChargerState _state = ChargerState.Unknown;
-    private PID currentChargerGateway; //Current actor handling connection
-    private string identity; //Serial number
+    private PID? currentChargerGateway; //Current actor handling connection
+    private string identity=""; //Serial number
 
     public ChargerGrain(IContext context, ClusterIdentity clusterIdentity) : base(context)
     {
@@ -26,9 +26,10 @@ public class ChargerGrain : ChargerGrainBase
         if (_state != ChargerState.Idle)
         {
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger on");
-            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn on, please :)",CommandUid= Guid.NewGuid().ToString() }) ;
+            if(currentChargerGateway is not null) Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn on, please :)",CommandUid= Guid.NewGuid().ToString() }) ;
 
             _state = ChargerState.Charging;
+            await Task.Delay(0);
         }
     }
 
@@ -37,9 +38,10 @@ public class ChargerGrain : ChargerGrainBase
         if (_state != ChargerState.Charging)
         {
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger off");
-            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn off, please :)" });
+            if(currentChargerGateway is not null) Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn off, please :)" });
 
             _state = ChargerState.Idle;
+            await Task.Delay(0);
         }
     }
 
@@ -51,8 +53,9 @@ public class ChargerGrain : ChargerGrainBase
         {
             Payload = request.Msg
         };
-        Context.Send(currentChargerGateway, cmd);
+        if (currentChargerGateway is not null) Context.Send(currentChargerGateway, cmd);
         //await StartCharging();//Democode - not final
+        await Task.Delay(0);
     }
 
     public override async Task NewWebSocketFromCharger(ChargerActorIdentity request)
@@ -64,10 +67,12 @@ public class ChargerGrain : ChargerGrainBase
         };
         //currentChargerGateway =request.Pid;
         identity =request.SerialNumber;
+        await Task.Delay(0);
     }
 
     public override async Task CommandReceived(CommandStatus status)
     {
         Console.WriteLine("Command received by charger "+identity+". Succeeded=" + status.Succeeded + " - " + status.Details);
+        await Task.Delay(0);
     }
 }

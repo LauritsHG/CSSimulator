@@ -25,14 +25,15 @@ public class AuthGrain : AuthGrainBase
         {
             decoded = Encoding.UTF8.GetString(Convert.FromBase64String(request.Credentials));
         }
-        catch(Exception exp)
+        catch(Exception)
         {
             decoded = "NOTVALID:NOTBASE64";
         }
         
         Console.WriteLine("Charger with Auth: " + decoded + " is connecting");
         string[] splitString = decoded.Split(":");
-        AuthenticationResponse response = new AuthenticationResponse();
+        await Task.Delay(0);//Fix warning Todo: Call database for auth
+        AuthenticationResponse response = new();
         if (splitString.Length != 2)
         {
             response.Validated = false;
