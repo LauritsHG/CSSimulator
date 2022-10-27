@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!--<ItemGroup>
+    <Content Remove="wwwroot\css\site.css" />
+  </ItemGroup>-->
+
   <ItemGroup>
     <None Remove="Messages.proto" />
     <None Remove="Protocol\protoactor\Protos.proto" />
@@ -29,6 +33,14 @@
 
 	  <ProtoGrain Include="Protocol\Messages.proto"></ProtoGrain>
 	  <ProtoGrain Include="Protocol\Grains.proto" AdditionalImportDirs="." />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="wwwroot\css\site.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
 </Project>

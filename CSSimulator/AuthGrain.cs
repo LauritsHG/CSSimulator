@@ -49,8 +49,6 @@ public class AuthGrain : AuthGrainBase
                 response.Validated = false;
             }
         }
-        
-        //response.Validated = true;
 
         return response;
     }

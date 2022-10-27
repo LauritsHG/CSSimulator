@@ -2,28 +2,32 @@
 using Proto.Cluster;
 using ChargerMessages;
 using LFA;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CSSimulator;
 
 public class ChargerGrain : ChargerGrainBase
 {
+
     private readonly ClusterIdentity _clusterIdentity;
 
     private enum ChargerState { Unknown, Charging, Idle }
     private ChargerState _state = ChargerState.Unknown;
     private PID? currentChargerGateway; //Current actor handling connection
     private string identity=""; //Serial number
+    public int index; // should probably be in Storage instead;
 
     public ChargerGrain(IContext context, ClusterIdentity clusterIdentity) : base(context)
     {
         _clusterIdentity = clusterIdentity;
-
+        
         Console.WriteLine($"{_clusterIdentity.Identity}: new virtual grain actor created");
     }
 
     public override async Task StartCharging()
     {
-        if (_state != ChargerState.Idle)
+        if (_state != ChargerState.Charging)
         {
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger on");
             if(currentChargerGateway is not null) Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn on, please :)",CommandUid= Guid.NewGuid().ToString() }) ;
@@ -35,7 +39,7 @@ public class ChargerGrain : ChargerGrainBase
 
     public override async Task StopCharging()
     {
-        if (_state != ChargerState.Charging)
+        if (_state != ChargerState.Idle)
         {
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger off");
             if(currentChargerGateway is not null) Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn off, please :)" });
@@ -49,12 +53,13 @@ public class ChargerGrain : ChargerGrainBase
     {
 
         Console.WriteLine(request.Msg + " from " + request.From);
+        ChargerGrainStorage.UpdateLastMessage(request.Msg.Split("\0")[0], index); // Removes empty characters
+
         CommandToChargerMessage cmd = new()
         {
             Payload = request.Msg
         };
         if (currentChargerGateway is not null) Context.Send(currentChargerGateway, cmd);
-        //await StartCharging();//Democode - not final
         await Task.Delay(0);
     }
 
@@ -65,9 +70,10 @@ public class ChargerGrain : ChargerGrainBase
             Address = request.Pid.Address,
             Id = request.Pid.Id
         };
-        //currentChargerGateway =request.Pid;
         identity =request.SerialNumber;
-        await Task.Delay(0);
+        ChargerGrainStorage.addChargerGrain(this, identity);
+        index = ChargerGrainStorage.currentChargerGrainAmounts;
+        ChargerGrainStorage.currentChargerGrainAmounts++;
     }
 
     public override async Task CommandReceived(CommandStatus status)

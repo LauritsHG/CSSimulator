@@ -1,8 +1,49 @@
 ﻿@page
-@model PrivacyModel
+@model ChargerGrainController
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Control Chargers";
+    float ConnectedChargers = ChargerGrainStorage.currentChargerGrainAmounts;
 }
-<h1>@ViewData["Title"]</h1>
+    <script>
+        function startCharging(index) {
+            $.get("api/chargergrain/startcharging/"+index, function (data) {
+                //$("a").html(data);
+            window.location.reload();
+            });
+        console.log(index); 
+        }
+    function stopCharging(index) {
+        $.get("api/chargergrain/stopcharging/"+index, function (data) {
+            //$("a").html(data);
+            window.location.reload();
+        });
+        console.log(index);
+    }
+    // Quick way to keep data updated, however there are probably better ways.
+    setTimeout(function () {
+        window.location.reload(1);
+    }, 5000);
+    </script>
 
-<p>Use this page to detail your site's privacy policy.</p>
+
+<h1>@ViewData["Title"]</h1>
+<p>GrainAmount: @ConnectedChargers</p>
+@for (int i = 0;i<ChargerGrainStorage.chargerGrains.Count;i++){
+    <div>
+        <a>@ChargerGrainStorage.chargerGrains[i].name</a>
+        <br/>
+        <input type="button" onclick="startCharging(@i)" value="Start" />
+        <input type="button" onclick="stopCharging(@i)" value="Stop" />
+        <a>@ChargerGrainStorage.chargerGrains[i].status</a>
+        <br/>
+        <a>Last Message from charger: @ChargerGrainStorage.chargerGrains[i].lastMessage</a>
+        <hr />
+    </div>
+}
+
+
+
+
+
+@*<button >AAAA</button>
+<a id="mytext">AAAA</a>*@
