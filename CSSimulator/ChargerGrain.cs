@@ -14,7 +14,7 @@ public class ChargerGrain : ChargerGrainBase
 
     private enum ChargerState { Unknown, Charging, Idle }
     private ChargerState _state = ChargerState.Unknown;
-    private PID currentChargerGateway; //Current actor handling connection
+    private PID? currentChargerGateway; //Current actor handling connection
     private string identity; //Serial number
     public int index =-1; // should probably be in Storage instead;
     private Dictionary<String, String> sentCommands = new();
@@ -36,6 +36,7 @@ public class ChargerGrain : ChargerGrainBase
             Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn on, please :)",CommandUid= newCommandUid }) ;
 
             _state = ChargerState.Charging;
+            await Task.Delay(0);
         }
     }
 
@@ -49,6 +50,7 @@ public class ChargerGrain : ChargerGrainBase
             Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn off, please :)", CommandUid = newCommandUid });
 
             _state = ChargerState.Idle;
+            await Task.Delay(0);
         }
     }
 
