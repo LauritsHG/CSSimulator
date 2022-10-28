@@ -16,7 +16,8 @@ public class ChargerGrain : ChargerGrainBase
     private ChargerState _state = ChargerState.Unknown;
     private PID currentChargerGateway; //Current actor handling connection
     private string identity; //Serial number
-    public int index; // should probably be in Storage instead;
+    public int index =-1; // should probably be in Storage instead;
+    private Dictionary<String, String> sentCommands = new();
 
     public ChargerGrain(IContext context, ClusterIdentity clusterIdentity) : base(context)
     {
@@ -29,8 +30,10 @@ public class ChargerGrain : ChargerGrainBase
     {
         if (_state != ChargerState.Charging)
         {
+            string newCommandUid = Guid.NewGuid().ToString();
+            sentCommands.Add(newCommandUid, "Started");
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger on");
-            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn on, please :)",CommandUid= Guid.NewGuid().ToString() }) ;
+            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn on, please :)",CommandUid= newCommandUid }) ;
 
             _state = ChargerState.Charging;
         }
@@ -40,8 +43,10 @@ public class ChargerGrain : ChargerGrainBase
     {
         if (_state != ChargerState.Idle)
         {
+            string newCommandUid = Guid.NewGuid().ToString();
+            sentCommands.Add(newCommandUid, "Stopped");
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger off");
-            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn off, please :)" });
+            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn off, please :)", CommandUid = newCommandUid });
 
             _state = ChargerState.Idle;
         }
@@ -53,11 +58,11 @@ public class ChargerGrain : ChargerGrainBase
         Console.WriteLine(request.Msg + " from " + request.From);
         ChargerGrainStorage.UpdateLastMessage(request.Msg.Split("\0")[0], index); // Removes empty characters
 
-        CommandToChargerMessage cmd = new()
-        {
-            Payload = request.Msg
-        };
-        Context.Send(currentChargerGateway, cmd);
+        //CommandToChargerMessage cmd = new()
+        //{
+        //    Payload = request.Msg
+        //};
+        //Context.Send(currentChargerGateway, cmd); //
     }
 
     public override async Task NewWebSocketFromCharger(ChargerActorIdentity request)
@@ -68,13 +73,24 @@ public class ChargerGrain : ChargerGrainBase
             Id = request.Pid.Id
         };
         identity =request.SerialNumber;
-        ChargerGrainStorage.addChargerGrain(this, identity);
-        index = ChargerGrainStorage.currentChargerGrainAmounts;
-        ChargerGrainStorage.currentChargerGrainAmounts++;
+        if(index < 0) //only add new Grain if its a completely new charger.
+        {
+            ChargerGrainStorage.addChargerGrain(this, identity);
+            index = ChargerGrainStorage.currentChargerGrainAmounts;
+            ChargerGrainStorage.currentChargerGrainAmounts++;
+        }
+        ChargerGrainStorage.UpdateLastMessage("New Connection".Split("\0")[0], index); // Removes empty characters
     }
 
     public override async Task CommandReceived(CommandStatus status)
     {
         Console.WriteLine("Command received by charger "+identity+". Succeeded=" + status.Succeeded + " - " + status.Details);
+        //ChargerGrainStorage.UpdateLastMessage(status.Details.Split("\0")[0], index); // Removes empty characters
+        if (sentCommands[status.CommandUid.Split("\0")[0]]!= null)
+        {
+            ChargerGrainStorage.UpdateStatus(sentCommands[status.CommandUid.Split("\0")[0]], index);
+            sentCommands.Remove(status.CommandUid.Split("\0")[0]);
+        }
+
     }
 }

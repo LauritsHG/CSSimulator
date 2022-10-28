@@ -21,6 +21,11 @@
             chargerGrains[index].lastMessage = msg;
         }
 
+        internal static void UpdateStatus(String status, int index)
+        {
+            chargerGrains[index].status = status;
+        }
+
         public class ChargerGrainsDTO
         {
             public ChargerGrain grain;

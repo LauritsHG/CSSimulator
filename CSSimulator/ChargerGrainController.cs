@@ -11,16 +11,16 @@ namespace CSSimulator
         public IEnumerable<string> start(int index)
         {
             Console.WriteLine("starts charging");
-            ChargerGrainStorage.chargerGrains[index].grain.StartCharging();
             ChargerGrainStorage.chargerGrains[index].status = "Starting";
+            ChargerGrainStorage.chargerGrains[index].grain.StartCharging();
             return new string[] { "Start" };
         }
         [HttpGet("stopCharging/{index}")]
         public IEnumerable<string> stop(int index)
         {
             Console.WriteLine("stops charging");
-            ChargerGrainStorage.chargerGrains[index].grain.StopCharging();
             ChargerGrainStorage.chargerGrains[index].status = "Stopping";
+            ChargerGrainStorage.chargerGrains[index].grain.StopCharging();
             return new string[] { "Stop" };
         }
 
