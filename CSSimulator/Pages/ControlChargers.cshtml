@@ -2,7 +2,7 @@
 @model ChargerGrainController
 @{
     ViewData["Title"] = "Control Chargers";
-    float ConnectedChargers = ChargerGrainStorage.currentChargerGrainAmounts;
+    float ConnectedChargers = ChargerGrainStorage.chargerGrains.Count;
 }
     <script>
         function startCharging(index) {
@@ -30,22 +30,22 @@
 <p>GrainAmount: @ConnectedChargers</p>
 @for (int i = 0;i<ChargerGrainStorage.chargerGrains.Count;i++){
     <div style="width:15%; display:inline-block">
-        <a>@ChargerGrainStorage.chargerGrains[i].name</a>
+        <a>@ChargerGrainStorage.chargerGrains.ElementAt(i).identity</a>
         <br/>
         <input type="button" onclick="startCharging(@i)" value="Start" />
         <input type="button" onclick="stopCharging(@i)" value="Stop" />
-        <a>@ChargerGrainStorage.chargerGrains[i].status</a>
+        <a>@ChargerGrainStorage.chargerGrains.ElementAt(i).status</a>
         <br/>
-        @if (ChargerGrainStorage.chargerGrains[i].lastMessage == "Offline")
+        @if (ChargerGrainStorage.chargerGrains.ElementAt(i)@*chargerGrains[i]*@.lastMessage == "Offline")
         {
-            <a style="background-color: lightcoral; overflow-wrap: break-word;">Last Msg: @ChargerGrainStorage.chargerGrains[i].lastMessage</a>
+            <a style="background-color: lightcoral; overflow-wrap: break-word;">Last Msg: @ChargerGrainStorage.chargerGrains.ElementAt(i).lastMessage</a>
         }
-        else if (ChargerGrainStorage.chargerGrains[i].lastMessage != null)
+        else if (ChargerGrainStorage.chargerGrains.ElementAt(i)@*chargerGrains[i]*@.lastMessage != null)
         {
-            <a style="background-color: green; overflow-wrap: break-word;">Last Msg: @ChargerGrainStorage.chargerGrains[i].lastMessage</a>
+            <a style="background-color: green; overflow-wrap: break-word;">Last Msg: @ChargerGrainStorage.chargerGrains.ElementAt(i).lastMessage</a>
         }
         else{
-                <a>Last Msg: @ChargerGrainStorage.chargerGrains[i].lastMessage</a>
+            <a>Last Msg: @ChargerGrainStorage.chargerGrains.ElementAt(i).lastMessage</a>
         }
         <hr />
     </div>

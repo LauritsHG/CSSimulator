@@ -2,12 +2,14 @@
 option csharp_namespace = "ChargerMessages";
 import "Protocol/Messages.proto";
 import "google/protobuf/empty.proto";
+import "cluster/cluster-pong-grpc";
+import "cluster/cluster-ping-grpc";
 
 
 service ChargerGrain {
   rpc StartCharging (google.protobuf.Empty) returns (google.protobuf.Empty);
   rpc StopCharging (google.protobuf.Empty) returns (google.protobuf.Empty);
-  rpc ReceiveMsgFromCharger (MessageFromCharger) returns (google.protobuf.Empty);
+  rpc ReceiveMsgFromCharger (MessageFromCharger) returns (AuthenticationResponse);
   rpc NewWebSocketFromCharger (ChargerActorIdentity) returns (google.protobuf.Empty);
   rpc CommandReceived (CommandStatus) returns (google.protobuf.Empty);
 }
