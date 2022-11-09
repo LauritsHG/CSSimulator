@@ -29,12 +29,12 @@ spec:
           imagePullPolicy: {{ .Values.member.image.pullPolicy }}
           env:
             - name: ASPNETCORE_URLS
-              value: http://*:5000
+              value: http://*:8080
             - name: ProtoActor__AdvertisedHost
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
           ports:
             - name: http
-              containerPort: 5000
+              containerPort: 8080
               protocol: TCP
