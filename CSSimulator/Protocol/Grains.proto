@@ -2,8 +2,6 @@
 option csharp_namespace = "ChargerMessages";
 import "Protocol/Messages.proto";
 import "google/protobuf/empty.proto";
-import "cluster/cluster-pong-grpc";
-import "cluster/cluster-ping-grpc";
 
 
 service ChargerGrain {

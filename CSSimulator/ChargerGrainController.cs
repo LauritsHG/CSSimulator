@@ -25,17 +25,6 @@ namespace CSSimulator
         }
 
 
-        //[HttpGet]
-        //public ActionResult GetMessage()
-        //{
-        //    Console.WriteLine("IDKIDK");
-        //    resp res = new resp();
-        //    res.data = "AA";
-        //    return new JsonResult(res);
-        //}
-        //public class resp
-        //{
-        //    public string data;
-        //}
+        
     }
 }
