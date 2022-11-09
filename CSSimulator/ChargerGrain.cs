@@ -73,16 +73,16 @@ public class ChargerGrain : ChargerGrainBase
         }
     }
 
-    public override async Task<AuthenticationResponse>  ReceiveMsgFromCharger(MessageFromCharger request)
+    public override async Task  ReceiveMsgFromCharger(MessageFromCharger request)
     {
 
-        Console.WriteLine(request.Msg + " from " + request.From);
+        //Console.WriteLine(request.Msg + " from " + request.From);
         ChargerGrainStorage.UpdateLastMessage(request.Msg.Split("\0")[0], index); // Removes empty characters
 
-        AuthenticationResponse response = new();
-        response.Validated = true;
-        if (currentChargerGateway == null) { response.Validated = false; }
-        return response;
+        //AuthenticationResponse response = new();
+        //response.Validated = true;
+        //if (currentChargerGateway == null) { response.Validated = false; }
+        //return response;
 
         //CommandToChargerMessage cmd = new()
         //{

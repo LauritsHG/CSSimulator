@@ -1,8 +1,9 @@
 ﻿@page
-@model ChargerGrainController
+@model chargerGrainModel
 @{
     ViewData["Title"] = "Control Chargers";
     float ConnectedChargers = ChargerGrainStorage.chargerGrains.Count;
+
 }
     <script>
         function startCharging(index) {
@@ -22,33 +23,52 @@
     // Quick way to keep data updated, however there are probably better ways.
     setTimeout(function () {
         window.location.reload(1);
-    }, 5000);
+    }, 60000);
     </script>
 
 
 <h1>@ViewData["Title"]</h1>
 <p>GrainAmount: @ConnectedChargers</p>
-@for (int i = 0;i<ChargerGrainStorage.chargerGrains.Count;i++){
+@for (int i = 0;i<Model.GetPaginatedResult(Model.CurrentPage,24).Count;i++){
     <div style="width:15%; display:inline-block">
-        <a>@ChargerGrainStorage.chargerGrains.ElementAt(i).identity</a>
+        <a>@Model.GetPaginatedResult(Model.CurrentPage,24).ElementAt(i).identity</a>
         <br/>
-        <input type="button" onclick="startCharging(@i)" value="Start" />
-        <input type="button" onclick="stopCharging(@i)" value="Stop" />
-        <a>@ChargerGrainStorage.chargerGrains.ElementAt(i).status</a>
+        <input type="button" onclick="startCharging(@(i+(Model.CurrentPage-1)*24))" value="Start" />
+        <input type="button" onclick="stopCharging(@(i+(Model.CurrentPage-1)*24))" value="Stop" />
+        <a>@Model.GetPaginatedResult(Model.CurrentPage,24).ElementAt(i).status</a>
         <br/>
-        @if (ChargerGrainStorage.chargerGrains.ElementAt(i)@*chargerGrains[i]*@.lastMessage == "Offline")
+        @if (Model.GetPaginatedResult(Model.CurrentPage, 24).ElementAt(i)@*chargerGrains[i]*@.lastMessage == "Offline")
         {
-            <a style="background-color: lightcoral; overflow-wrap: break-word;">Last Msg: @ChargerGrainStorage.chargerGrains.ElementAt(i).lastMessage</a>
+            <a style="background-color: lightcoral; overflow-wrap: break-word;">Last Msg: @Model.GetPaginatedResult(Model.CurrentPage,24).ElementAt(i).lastMessage</a>
         }
-        else if (ChargerGrainStorage.chargerGrains.ElementAt(i)@*chargerGrains[i]*@.lastMessage != null)
+        else if (Model.GetPaginatedResult(Model.CurrentPage, 24).ElementAt(i)@*chargerGrains[i]*@.lastMessage != null)
         {
-            <a style="background-color: green; overflow-wrap: break-word;">Last Msg: @ChargerGrainStorage.chargerGrains.ElementAt(i).lastMessage</a>
+            <a style="background-color: green; overflow-wrap: break-word;">Last Msg: @Model.GetPaginatedResult(Model.CurrentPage,24).ElementAt(i).lastMessage</a>
         }
         else{
-            <a>Last Msg: @ChargerGrainStorage.chargerGrains.ElementAt(i).lastMessage</a>
+            <a>Last Msg: @Model.GetPaginatedResult(Model.CurrentPage,24).ElementAt(i).lastMessage</a>
         }
         <hr />
     </div>
 }
+<div>
+    <ul class="pagination" style="display:inline-block">
+        <li style="display:inline-block" style class="page-item">
+            <a asp-route-currentpage="1" class="page-link">☜</a>
+        </li>
+        @for (var j = Model.CurrentPage-5; j <= Model.CurrentPage+5; j++)
+        {
+            @if (j >0 && j<=Model.TotalPages){
+                <li style="display:inline-block" style class="page-item @(j == Model.CurrentPage ? "active" : "")">
+                    <a asp-route-currentpage="@j" class="page-link">@j</a>
+                </li>
+            }
+
+        }
+        <li style="display:inline-block" style class="page-item">
+            <a asp-route-currentpage="@Model.TotalPages" class="page-link">☞</a>
+        </li>
+    </ul>
+</div>
 
 
