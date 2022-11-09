@@ -1,0 +1,23 @@
+member:
+  replicaCount: 2
+
+  image:
+    repository: acrworkflow1667551505418.azurecr.io/image-workflow-1667551505418
+    pullPolicy: Always
+    tag: "latest"
+
+  podAnnotations: {}
+
+  podSecurityContext:
+    runAsUser: 101
+
+  securityContext:
+    allowPrivilegeEscalation: false
+
+  service:
+    type: ClusterIP
+    port: 5000
+
+  
+
+
