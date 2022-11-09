@@ -1,5 +1,5 @@
 member:
-  replicaCount: 2
+  replicaCount: 1
 
   image:
     repository: acrworkflow1667551505418.azurecr.io/image-workflow-1667551505418
