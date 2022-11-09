@@ -24,6 +24,11 @@ public static class ActorSystemConfigurationConsul
 
             var actorSystemConfig = ActorSystemConfig
                 .Setup();
+            //var actorSystemConfig = new ActorSystemConfig
+            //{
+            //    ActorRequestTimeout = TimeSpan.FromMinutes(5),
+            //    DeadLetterRequestLogging = false
+            //};
 
             // remote configuration
 
@@ -54,7 +59,7 @@ public static class ActorSystemConfigurationConsul
             )
         )
 
-    );
+    ).WithGossipRequestTimeout(TimeSpan.FromMinutes(5));
 
             // create the actor system
 

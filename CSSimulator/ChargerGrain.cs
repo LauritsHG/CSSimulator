@@ -22,7 +22,14 @@ public class ChargerGrain : ChargerGrainBase
     public ChargerGrain(IContext context, ClusterIdentity clusterIdentity) : base(context)
     {
         _clusterIdentity = clusterIdentity;
-        
+
+        if (index < 0) //only add new Grain if its a completely new charger.
+        {
+            ChargerGrainStorage.addChargerGrain(this, "unknown");
+            index = ChargerGrainStorage.currentChargerGrainAmounts;
+            ChargerGrainStorage.currentChargerGrainAmounts++;
+        }
+
         Console.WriteLine($"{_clusterIdentity.Identity}: new virtual grain actor created");
     }
 
@@ -31,9 +38,9 @@ public class ChargerGrain : ChargerGrainBase
         if (_state != ChargerState.Charging)
         {
             string newCommandUid = Guid.NewGuid().ToString();
-            sentCommands.Add(newCommandUid, "Started");
+            addCommand(newCommandUid, "Started");
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger on");
-            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn on, please :)",CommandUid= newCommandUid }) ;
+            Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn on, please :)", CommandUid= newCommandUid }) ;
 
             _state = ChargerState.Charging;
             await Task.Delay(0);
@@ -45,7 +52,7 @@ public class ChargerGrain : ChargerGrainBase
         if (_state != ChargerState.Idle)
         {
             string newCommandUid = Guid.NewGuid().ToString();
-            sentCommands.Add(newCommandUid, "Stopped");
+            addCommand(newCommandUid, "Stopped");
             Console.WriteLine($"{_clusterIdentity.Identity}: turning charger off");
             Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn off, please :)", CommandUid = newCommandUid });
 
@@ -53,12 +60,29 @@ public class ChargerGrain : ChargerGrainBase
             await Task.Delay(0);
         }
     }
+    private void addCommand(string uid, string commandMsg)
+    {
+        if (sentCommands.Count < 10)
+        {
+            sentCommands.Add(uid, commandMsg);
+        }
+        else
+        {
+            sentCommands.Remove(sentCommands.Keys.First());
+            sentCommands.Add(uid, commandMsg);
+        }
+    }
 
     public override async Task  ReceiveMsgFromCharger(MessageFromCharger request)
     {
 
-        Console.WriteLine(request.Msg + " from " + request.From);
+        //Console.WriteLine(request.Msg + " from " + request.From);
         ChargerGrainStorage.UpdateLastMessage(request.Msg.Split("\0")[0], index); // Removes empty characters
+
+        //AuthenticationResponse response = new();
+        //response.Validated = true;
+        //if (currentChargerGateway == null) { response.Validated = false; }
+        //return response;
 
         //CommandToChargerMessage cmd = new()
         //{
@@ -74,13 +98,7 @@ public class ChargerGrain : ChargerGrainBase
             Address = request.Pid.Address,
             Id = request.Pid.Id
         };
-        identity =request.SerialNumber;
-        if(index < 0) //only add new Grain if its a completely new charger.
-        {
-            ChargerGrainStorage.addChargerGrain(this, identity);
-            index = ChargerGrainStorage.currentChargerGrainAmounts;
-            ChargerGrainStorage.currentChargerGrainAmounts++;
-        }
+        ChargerGrainStorage.chargerGrains.ElementAt(index)/*chargerGrains[index]*/.identity = request.SerialNumber;
         ChargerGrainStorage.UpdateLastMessage("New Connection".Split("\0")[0], index); // Removes empty characters
     }
 
@@ -93,6 +111,5 @@ public class ChargerGrain : ChargerGrainBase
             ChargerGrainStorage.UpdateStatus(sentCommands[status.CommandUid.Split("\0")[0]], index);
             sentCommands.Remove(status.CommandUid.Split("\0")[0]);
         }
-
     }
 }

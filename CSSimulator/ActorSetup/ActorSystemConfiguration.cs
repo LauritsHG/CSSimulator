@@ -57,7 +57,7 @@ public static class ActorSystemConfiguration
             )
         )
 
-    );
+    ).WithGossipRequestTimeout(TimeSpan.FromMinutes(5));
 
 
             // create the actor system

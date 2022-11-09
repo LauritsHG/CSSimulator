@@ -11,8 +11,8 @@ Systemkrav:
 
 Opsætning og kørsel:
 - ```git clone https://github.com/LauritsHG/CSSimulator```
-- Byg og Push Image (Fra mappe med Dockerfile) ```docker build -t filip8600/CSSimulator:latest```
-- Push til Image Repository (Fx Docker Hub) ```docker push filip8600/CSSimulator:latest```
+- Byg og Push Image (Fra mappe med Dockerfile) ```docker build . -t filip8600/cssimulator:latest```
+- Push til Image Repository (Fx Docker Hub) ```docker push filip8600/cssimulator:latest```
 - Start Kluster ```./minicube.exe start```
 - Release image til Cluster: ```helm install CSSimulator chart-helm```
 - Verificer at pods kører: ```Kubectl get pods```
