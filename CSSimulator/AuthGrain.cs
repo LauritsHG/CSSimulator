@@ -3,6 +3,7 @@ using Proto.Cluster;
 using ChargerMessages;
 using LFA;
 using System.Text;
+using System.Diagnostics;
 
 namespace CSSimulator;
 
@@ -15,7 +16,7 @@ public class AuthGrain : AuthGrainBase
     {
         _clusterIdentity = clusterIdentity;
 
-        Console.WriteLine($"{_clusterIdentity.Identity}: new virtual Auth grain actor created");
+        Debug.WriteLine($"{_clusterIdentity.Identity}: new virtual Auth grain actor created");
     }
 
     public override async Task<AuthenticationResponse> Authenticate(AuthenticationMessage request)
@@ -29,8 +30,8 @@ public class AuthGrain : AuthGrainBase
         {
             decoded = "NOTVALID:NOTBASE64";
         }
-        
-        Console.WriteLine("Charger with Auth: " + decoded + " is connecting");
+
+        Debug.WriteLine("Charger with Auth: " + decoded + " is connecting");
         string[] splitString = decoded.Split(":");
         await Task.Delay(0);//Fix warning Todo: Call database for auth
         AuthenticationResponse response = new();
