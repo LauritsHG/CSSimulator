@@ -54,7 +54,7 @@
 <div>
     <ul class="pagination" style="display:inline-block">
         <li style="display:inline-block" style class="page-item">
-            <a asp-route-currentpage="1" class="page-link">☜</a>
+            <a asp-route-currentpage="1" class="page-link">◄◄</a>
         </li>
         @for (var j = Model.CurrentPage-5; j <= Model.CurrentPage+5; j++)
         {
@@ -66,7 +66,7 @@
 
         }
         <li style="display:inline-block" style class="page-item">
-            <a asp-route-currentpage="@Model.TotalPages" class="page-link">☞</a>
+            <a asp-route-currentpage="@Model.TotalPages" class="page-link">►►</a>
         </li>
     </ul>
 </div>
