@@ -4,6 +4,7 @@ using ChargerMessages;
 using LFA;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace CSSimulator;
 
@@ -30,7 +31,7 @@ public class ChargerGrain : ChargerGrainBase
             ChargerGrainStorage.currentChargerGrainAmounts++;
         }
 
-        Console.WriteLine($"{_clusterIdentity.Identity}: new virtual grain actor created");
+        Debug.WriteLine($"{_clusterIdentity.Identity}: new virtual grain actor created");
     }
 
     public override async Task StartCharging()
