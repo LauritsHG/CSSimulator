@@ -2,9 +2,9 @@ member:
   replicaCount: 1
 
   image:
-    repository: filip8600/cssimulator
+    repository: acrworkflow1667551505418.azurecr.io/image-workflow-1667551505418
     pullPolicy: Always
-    tag: "latest"
+    tag: "should.be.replaced"
 
   podAnnotations: {}
 
