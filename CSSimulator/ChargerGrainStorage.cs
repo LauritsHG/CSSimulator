@@ -6,7 +6,6 @@ namespace CSSimulator
     {
         public static int currentChargerGrainAmounts;
         
-        //public static List<ChargerGrainsDTO> chargerGrains = new();
         public static ConcurrentQueue<ChargerGrainsDTO> chargerGrains = new();
 
         public static void addChargerGrain(ChargerGrain grain, string identity)
@@ -14,7 +13,6 @@ namespace CSSimulator
             ChargerGrainsDTO newGrain = new();
             newGrain.grain = grain;
             newGrain.identity = identity;
-            //chargerGrains.Add(newGrain);
             chargerGrains.Enqueue(newGrain);
         }
 
@@ -22,7 +20,6 @@ namespace CSSimulator
         {
             try
             {
-                //chargerGrains[index].lastMessage = msg;
                 chargerGrains.ElementAt(index).lastMessage = msg;
             }
             catch (Exception exp)
@@ -35,7 +32,6 @@ namespace CSSimulator
         {
             try
             {
-                //chargerGrains[index].status = status;
                 chargerGrains.ElementAt(index).status = status;
             }
             catch (Exception exp)

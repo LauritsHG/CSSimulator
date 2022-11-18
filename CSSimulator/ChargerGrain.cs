@@ -77,19 +77,19 @@ public class ChargerGrain : ChargerGrainBase
     public override async Task  ReceiveMsgFromCharger(MessageFromCharger request)
     {
 
-        //Console.WriteLine(request.Msg + " from " + request.From);
-        ChargerGrainStorage.UpdateLastMessage(request.Msg.Split("\0")[0], index); // Removes empty characters
+        if (currentChargerGateway == null)
+        {
+            var pid = new PID
+            {
+                Address = request.Pid.Address,
+                Id = request.Pid.Id
+            };
+            Context.Send(pid, new ResendSetup());
+        }
 
-        //AuthenticationResponse response = new();
-        //response.Validated = true;
-        //if (currentChargerGateway == null) { response.Validated = false; }
-        //return response;
-
-        //CommandToChargerMessage cmd = new()
-        //{
-        //    Payload = request.Msg
-        //};
-        //Context.Send(currentChargerGateway, cmd); //
+        string message = request.Msg.Split("\0")[0]; // Removes empty characters
+        Console.WriteLine("Received msg " + message);
+        ChargerGrainStorage.UpdateLastMessage(message, index); 
     }
 
     public override async Task NewWebSocketFromCharger(ChargerActorIdentity request)
@@ -99,14 +99,14 @@ public class ChargerGrain : ChargerGrainBase
             Address = request.Pid.Address,
             Id = request.Pid.Id
         };
-        ChargerGrainStorage.chargerGrains.ElementAt(index)/*chargerGrains[index]*/.identity = request.SerialNumber;
+        ChargerGrainStorage.chargerGrains.ElementAt(index).identity = request.SerialNumber;
         ChargerGrainStorage.UpdateLastMessage("New Connection".Split("\0")[0], index); // Removes empty characters
     }
 
     public override async Task CommandReceived(CommandStatus status)
     {
         Console.WriteLine("Command received by charger "+identity+". Succeeded=" + status.Succeeded + " - " + status.Details);
-        //ChargerGrainStorage.UpdateLastMessage(status.Details.Split("\0")[0], index); // Removes empty characters
+
         if (sentCommands[status.CommandUid.Split("\0")[0]]!= null)
         {
             ChargerGrainStorage.UpdateStatus(sentCommands[status.CommandUid.Split("\0")[0]], index);

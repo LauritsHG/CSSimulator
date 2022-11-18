@@ -11,16 +11,16 @@ namespace CSSimulator
         public IEnumerable<string> start(int index)
         {
             Console.WriteLine("starts charging");
-            ChargerGrainStorage.chargerGrains.ElementAt(index)/*chargerGrains[index]*/.status = "Starting";
-            ChargerGrainStorage.chargerGrains.ElementAt(index)/*chargerGrains[index]*/.grain.StartCharging();
+            ChargerGrainStorage.chargerGrains.ElementAt(index).status = "Starting";
+            ChargerGrainStorage.chargerGrains.ElementAt(index).grain.StartCharging();
             return new string[] { "Start" };
         }
         [HttpGet("stopCharging/{index}")]
         public IEnumerable<string> stop(int index)
         {
             Console.WriteLine("stops charging");
-            ChargerGrainStorage.chargerGrains.ElementAt(index)/*chargerGrains[index]*/.status = "Stopping";
-            ChargerGrainStorage.chargerGrains.ElementAt(index)/*chargerGrains[index]*/.grain.StopCharging();
+            ChargerGrainStorage.chargerGrains.ElementAt(index).status = "Stopping";
+            ChargerGrainStorage.chargerGrains.ElementAt(index).grain.StopCharging();
             return new string[] { "Stop" };
         }
 
