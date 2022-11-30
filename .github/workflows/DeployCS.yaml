@@ -5,7 +5,7 @@ name: Deploy CS to Azure
             - production
     workflow_dispatch: {}
 env:
-    ACR_RESOURCE_GROUP: Bachelor
+    ACR_RESOURCE_GROUP: BachelorStudent
     AZURE_CONTAINER_REGISTRY: cssimulatorcontainerregistry
     CHART_OVERRIDE_PATH: ./CSSimulator/chart-helm/valuesazure.yaml
     CHART_OVERRIDES: ""
