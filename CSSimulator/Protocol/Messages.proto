@@ -5,10 +5,14 @@ option csharp_namespace = "ChargerMessages";
 message MessageFromCharger {
 	string msg = 1;
 	string from = 2;
+	actor.PID pid = 3;
+}
+message ResendSetup{
+
 }
 
 message ChargerActorIdentity {
-	actor.PID2 pid = 1;
+	actor.PID pid = 1;
 	string serial_number = 2;
 }
 message AuthenticationMessage {

@@ -57,7 +57,11 @@ public static class ActorSystemConfiguration
             )
         )
 
-    ).WithGossipRequestTimeout(TimeSpan.FromMinutes(60)).WithTimeout(TimeSpan.FromMinutes(60)).WithActorSpawnTimeout(TimeSpan.FromMinutes(60)).WithActorRequestTimeout(TimeSpan.FromMinutes(60)).WithActorActivationTimeout(TimeSpan.FromMinutes(60));
+    ).WithGossipRequestTimeout(TimeSpan.FromMinutes(60))
+    .WithTimeout(TimeSpan.FromMinutes(60))
+    .WithActorSpawnTimeout(TimeSpan.FromMinutes(60))
+    .WithActorRequestTimeout(TimeSpan.FromMinutes(60))
+    .WithActorActivationTimeout(TimeSpan.FromMinutes(60));
 
 
             // create the actor system
