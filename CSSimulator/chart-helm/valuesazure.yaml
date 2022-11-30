@@ -2,7 +2,7 @@ member:
   replicaCount: 1
 
   image:
-    repository: acrworkflow1667551505418.azurecr.io/image-workflow-1667551505418
+    repository: cssimulatorcontainerregistry.azurecr.io/cssimulatorcontainerimage
     pullPolicy: Always
     tag: "should.be.replaced"
 

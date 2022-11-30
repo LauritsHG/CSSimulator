@@ -1,8 +1,8 @@
 member:
-  replicaCount: 1
+  replicaCount: 2
 
   image:
-    repository: filip8600/cssimulator
+    repository: registry.hub.docker.com/filip8600/cssimulator
     pullPolicy: Always
     tag: "latest"
 
@@ -18,6 +18,9 @@ member:
     type: ClusterIP
     port: 5000
 
-  
-
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  averageCpuUtilization: 90
 
