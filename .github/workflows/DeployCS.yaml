@@ -6,13 +6,13 @@ name: Deploy CS to Azure
     workflow_dispatch: {}
 env:
     ACR_RESOURCE_GROUP: Bachelor
-    AZURE_CONTAINER_REGISTRY: acrworkflow1667551505418
+    AZURE_CONTAINER_REGISTRY: cssimulatorcontainerregistry
     CHART_OVERRIDE_PATH: ./CSSimulator/chart-helm/valuesazure.yaml
     CHART_OVERRIDES: ""
     CHART_PATH: ./CSSimulator/chart-helm
-    CLUSTER_NAME: LFA
-    CLUSTER_RESOURCE_GROUP: Bachelor
-    CONTAINER_NAME: image-workflow-1667551505418
+    CLUSTER_NAME: bachelorcluster
+    CLUSTER_RESOURCE_GROUP: BachelorStudent
+    CONTAINER_NAME: cssimulatorcontainerimage
 jobs:
     buildImage:
         permissions:
