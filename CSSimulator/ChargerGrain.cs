@@ -40,7 +40,7 @@ public class ChargerGrain : ChargerGrainBase
         {
             string newCommandUid = Guid.NewGuid().ToString();
             addCommand(newCommandUid, "Started");
-            Console.WriteLine($"{_clusterIdentity.Identity}: turning charger on");
+            Console.WriteLine($"{_clusterIdentity.Identity}: turning charger on. Timestamp: " + DateTime.Now.ToString("T") + ":" + DateTime.Now.ToString("ff"));
             Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn on, please :)", CommandUid= newCommandUid }) ;
 
             _state = ChargerState.Charging;
@@ -54,7 +54,7 @@ public class ChargerGrain : ChargerGrainBase
         {
             string newCommandUid = Guid.NewGuid().ToString();
             addCommand(newCommandUid, "Stopped");
-            Console.WriteLine($"{_clusterIdentity.Identity}: turning charger off");
+            Console.WriteLine($"{_clusterIdentity.Identity}: turning charger off. Timestamp: " + DateTime.Now.ToString("T")+":"+DateTime.Now.ToString("ff"));
             Context.Send(currentChargerGateway, new CommandToChargerMessage { Payload = "Turn off, please :)", CommandUid = newCommandUid });
 
             _state = ChargerState.Idle;
@@ -88,7 +88,7 @@ public class ChargerGrain : ChargerGrainBase
         }
 
         string message = request.Msg.Split("\0")[0]; // Removes empty characters
-        Console.WriteLine("Received msg " + message);
+        Console.WriteLine("Received msg " + message+ "  Timestamp: " + DateTime.Now.ToString("T") + ":" + DateTime.Now.ToString("ff"));
         ChargerGrainStorage.UpdateLastMessage(message, index); 
     }
 
@@ -105,7 +105,7 @@ public class ChargerGrain : ChargerGrainBase
 
     public override async Task CommandReceived(CommandStatus status)
     {
-        Console.WriteLine("Command received by charger "+identity+". Succeeded=" + status.Succeeded + " - " + status.Details);
+        Console.WriteLine("Command received by charger "+identity+". Succeeded=" + status.Succeeded + " - " + status.Details+ ".  Timestamp: " + DateTime.Now.ToString("T") + ":" + DateTime.Now.ToString("ff"));
 
         if (sentCommands[status.CommandUid.Split("\0")[0]]!= null)
         {
