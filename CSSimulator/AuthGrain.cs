@@ -1,9 +1,8 @@
-﻿using Proto;
+﻿using ChargerMessages;
+using Proto;
 using Proto.Cluster;
-using ChargerMessages;
-using LFA;
-using System.Text;
 using System.Diagnostics;
+using System.Text;
 
 namespace CSSimulator;
 
@@ -26,7 +25,7 @@ public class AuthGrain : AuthGrainBase
         {
             decoded = Encoding.UTF8.GetString(Convert.FromBase64String(request.Credentials));
         }
-        catch(Exception)
+        catch (Exception)
         {
             decoded = "NOTVALID:NOTBASE64";
         }

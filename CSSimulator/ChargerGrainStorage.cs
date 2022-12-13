@@ -5,7 +5,7 @@ namespace CSSimulator
     public static class ChargerGrainStorage
     {
         public static int currentChargerGrainAmounts;
-        
+
         public static ConcurrentQueue<ChargerGrainsDTO> chargerGrains = new();
 
         public static void addChargerGrain(ChargerGrain grain, string identity)
@@ -47,7 +47,7 @@ namespace CSSimulator
             public string status;
             public string lastMessage;
         }
-        
+
 
     }
 }

@@ -1,13 +1,12 @@
 ﻿using ChargerMessages;
+using LFA;
 using Proto;
 using Proto.Cluster;
-using Proto.Cluster.Consul;
+using Proto.Cluster.Kubernetes;
 using Proto.Cluster.Partition;
 using Proto.DependencyInjection;
 using Proto.Remote;
 using Proto.Remote.GrpcNet;
-using LFA;
-using Proto.Cluster.Kubernetes;
 
 namespace CSSimulator.ActorSetup;
 
